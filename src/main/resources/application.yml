@@ -1,0 +1,45 @@
+# application.yml
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  datasource:
+    url: jdbc:firebirdsql://${DB_HOST:localhost}:${DB_PORT:3050}/${DB_PATH:employee}?charSet=utf-8
+    username: ${DB_USERNAME:SYSDBA}
+    password: ${DB_PASSWORD:masterkey}
+    driver-class-name: org.firebirdsql.jdbc.FBDriver
+
+    type: com.zaxxer.hikari.HikariDataSource
+
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 10
+      minimum-idle: 2
+      max-lifetime: 1800000
+      idle-timeout: 600000
+      pool-name: Firebird-Hikari-Pool
+
+      data-source-properties:
+        charSet: utf-8
+        lc_ctype: UTF8
+
+logging:
+  level:
+    #org.springframework.jdbc: DEBUG
+    #com.zaxxer.hikari: DEBUG
+    com.frds: DEBUG
+    org.springframework.web.servlet: DEBUG
+
+app:
+  api:
+    base-path: /api
+    openapi:
+      title: Firebird/RedDatabase REST Data Services
+      description: RESTful API для базы данных Firebird/RedDatabase
+      version: 1.0.0
+      contact:
+        name: API Support
+        email: support@frds.com
+      server-url: http://localhost:8080
