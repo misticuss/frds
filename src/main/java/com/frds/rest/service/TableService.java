@@ -56,6 +56,7 @@ public class TableService {
     } else {
       sql.append("*");
     }
+    injectValidation(fields, filter, sort);
 
     sql.append(" FROM \"").append(tableName).append("\"");
 
@@ -70,6 +71,12 @@ public class TableService {
     }
 
     return namedJdbcTemplate.queryForList(sql.toString(), new HashMap<>());
+  }
+
+  private void injectValidation(String... strings) {
+    for (String string : strings)
+      if (string != null && string.toLowerCase().contains(" union"))
+        throw new RuntimeException(String.format("Попытка SQL-инъекции в контексте '%s'", string));
   }
 
   public Map<String, Object> getRecordById(String tableName, String keys) {

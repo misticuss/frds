@@ -1,5 +1,7 @@
 package com.frds.rest.config;
 
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.Contact;
@@ -21,6 +23,12 @@ import java.util.List;
  * Time: 14:46
  */
 @Configuration
+@SecurityScheme(
+    name = "basicAuth",
+    type = SecuritySchemeType.HTTP,
+    scheme = "basic",
+    description = "Введите учетные данные БД"
+)
 public class OpenApiConfig {
 
   @Value("${app.api.openapi.title}")
@@ -52,12 +60,7 @@ public class OpenApiConfig {
             new Server()
                 .url("http://localhost:8080" + contextPath)
                 .description("Development Server")
-        ))
-        /*.tags(List.of(
-            new Tag().name("tables").description("Операции с таблицами"),
-            new Tag().name("procedures").description("Хранимые процедуры"),
-            new Tag().name("metadata").description("Метаданные БД")
-        ))*/;
+        ));
   }
 
 }

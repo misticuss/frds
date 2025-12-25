@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -50,6 +51,23 @@ public class GlobalExceptionHandler {
     err.setStatus(HttpStatus.NOT_FOUND.value());
     err.setMessage("Ресурс не найден");
     err.setException(e.getMessage());
+    return err;
+  }
+
+  @ExceptionHandler(BadCredentialsException.class)
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
+  @ApiResponse(
+      responseCode = "401",
+      description = "Неверные учетные данные",
+      content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = ErrorDetails.class)
+      )
+  )
+  public ErrorDetails handleBadCredentialsException(BadCredentialsException e) {
+    ErrorDetails err = new ErrorDetails();
+    err.setStatus(HttpStatus.UNAUTHORIZED.value());
+    err.setMessage("Неверные учетные данные");
     return err;
   }
 

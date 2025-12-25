@@ -4,6 +4,7 @@ import com.frds.rest.exception.ObjectNotFoundException;
 import com.frds.rest.model.TableMetadata;
 import com.frds.rest.service.MetadataService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,6 +42,7 @@ public class MetadataController {
   @GetMapping("/")
   @Operation(summary = "Информация о БД",
       description = "Возвращает список таблиц, представлений и процедур, содержащихся в БД")
+  @SecurityRequirement(name = "none")
   public ResponseEntity<MetaInfo> getApiInfo() {
     MetaInfo info = new MetaInfo();
     info.setName(title);
@@ -55,6 +57,7 @@ public class MetadataController {
   @GetMapping("/{entity}")
   @Operation(summary = "Информация о сущности в БД",
       description = "Возвращает список всех полей, первичных ключей и другой информации")
+  @SecurityRequirement(name = "basicAuth")
   public ResponseEntity<TableMetadata> getEntityInfo(@PathVariable String entity) {
     TableMetadata info = metadataService.getAllTables().get(entity);
     if (info == null)

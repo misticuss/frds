@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/rpc")
 @Tag(name = "RPC", description = "Удаленный вызов хранимых процедур и функций")
+@SecurityRequirement(name = "basicAuth")
 public class RpcController {
 
   private final PpcService procedureService;
@@ -51,7 +53,7 @@ public class RpcController {
   @ApiResponses({
       @ApiResponse(
           responseCode = "201",
-          description = "Запись успешно создана",
+          description = "Процедура успешно выполнена",
           content = @Content(
               mediaType = "application/json",
               schema = @Schema(implementation = com.frds.rest.model.ApiResponse.class)

@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ import java.util.function.Supplier;
 @RestController
 @RequestMapping("/api/{entity}")
 @Tag(name = "ENTITY", description = "CRUD операции с сущностями базы данных")
+@SecurityRequirement(name = "basicAuth")
 public class TableController {
 
   private final TableService tableService;
@@ -74,7 +76,7 @@ public class TableController {
   @ApiResponses({
       @ApiResponse(
           responseCode = "201",
-          description = "Процедура успешно выполнена",
+          description = "Запись успешно создана",
           content = @Content(
               mediaType = "application/json",
               schema = @Schema(implementation = com.frds.rest.model.ApiResponse.class)
@@ -114,6 +116,16 @@ public class TableController {
   @DeleteMapping("/{key}")
   @Operation(summary = "Удалить запись",
       description = "Удаляет запись из таблицы")
+  @ApiResponses({
+      @ApiResponse(
+          responseCode = "204",
+          description = "Запись успешно удалена",
+          content = @Content(
+              mediaType = "application/json",
+              schema = @Schema(implementation = com.frds.rest.model.ApiResponse.class)
+          )
+      )
+  })
   public ResponseEntity<Void> deleteRecord(
       @Parameter(description = "Имя таблицы") @PathVariable String entity,
       @Parameter(description = "Идентификатор записи") @PathVariable String key) {
