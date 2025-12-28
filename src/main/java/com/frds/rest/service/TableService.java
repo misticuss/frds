@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -56,6 +55,18 @@ public class TableService {
     } else {
       sql.append("*");
     }
+    if (StringUtils.hasText(fields)) {
+      Set<String> columns = getTableMetadata(tableName).getColumns().stream()
+          .map(ColumnMetadata::getName).collect(Collectors.toSet());
+      for (String field : fields.split(",")) {
+        field = field.trim();
+        int index = field.indexOf(' ');
+        if (index >= 0)
+          field = field.substring(0, index);
+        if (!columns.contains(field.toUpperCase()))
+          throw new RuntimeException(String.format("Параметр fields содержит неизвестный столбец '%s'", field));
+      }
+    }
     injectValidation(fields, filter, sort);
 
     sql.append(" FROM \"").append(tableName).append("\"");
@@ -71,6 +82,14 @@ public class TableService {
     }
 
     return namedJdbcTemplate.queryForList(sql.toString(), new HashMap<>());
+  }
+
+  public Long getTableCount(String tableName, String filter) {
+    StringBuilder countSql = new StringBuilder("SELECT COUNT(*) FROM \"").append(tableName).append("\"");
+    if (StringUtils.hasText(filter)) {
+      countSql.append(" WHERE ").append(filter);
+    }
+    return (Long) namedJdbcTemplate.queryForMap(countSql.toString(), new HashMap<>()).get("COUNT");
   }
 
   private void injectValidation(String... strings) {
@@ -96,7 +115,7 @@ public class TableService {
     MapSqlParameterSource params = new MapSqlParameterSource();
     List<ColumnMetadata> columnMetadata = getTableMetadata(tableName).getColumns();
     columnMetadata.forEach(cm -> {
-      if (cm.isComputed())
+      if (cm.isComputed() && data.containsKey(cm.getName()))
         throw new RuntimeException(String.format("Данные содержат вычисляемое поле '%s'", cm.getName()));
       /*if (!cm.isNullable() && !data.containsKey(cm.getName()))
         throw new RuntimeException(String.format("Данные не содержат обязательного поля '%s'", cm.getName()));*/

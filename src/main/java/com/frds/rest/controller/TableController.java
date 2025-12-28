@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
@@ -56,9 +57,17 @@ public class TableController {
       @Parameter(description = "Сортировка", example = "EMP_NO DESC")
       @RequestParam(required = false) String sort) {
 
+    HttpHeaders headers = new HttpHeaders();
     List<Map<String, Object>> data = tableService.getTableData(
         entity, limit, offset, fields, filter, sort);
-    return ResponseEntity.ok(data);
+    Long count = tableService.getTableCount(entity, filter);
+    long r1 = offset == null ? 0 : offset;
+    long l = limit == null ? 0 : limit;
+    long r2 = r1 + l;
+    if (r2 > count || limit == null)
+      r2 = count;
+    headers.add("Content-Range", "items " + r1 + "-" + r2 + "/" + count);
+    return ResponseEntity.ok().headers(headers).body(data);
   }
 
   @GetMapping("/{key}")
