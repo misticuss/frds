@@ -48,5 +48,4 @@ public class FrdsApplication {
       System.out.println("Swagger UI: http://localhost:" + port + contextPath + "swagger-ui/index.html");
     }
   }
-
 }

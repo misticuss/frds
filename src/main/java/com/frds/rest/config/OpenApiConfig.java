@@ -15,6 +15,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 
 /**
@@ -43,8 +45,17 @@ public class OpenApiConfig {
   @Value("${server.servlet.context-path:/}")
   private String contextPath;
 
+  @Value("${server.port:8080}")
+  private String port;
+
   @Bean
   public OpenAPI customOpenAPI() {
+    String host;
+    try {
+      host = InetAddress.getLocalHost().getHostAddress();
+    } catch (UnknownHostException e) {
+      host = "localhost";
+    }
     return new OpenAPI()
         .info(new Info()
             .title(title)
@@ -58,7 +69,7 @@ public class OpenApiConfig {
                 .url("https://www.apache.org/licenses/LICENSE-2.0")))
         .servers(List.of(
             new Server()
-                .url("http://localhost:8080" + contextPath)
+                .url("http://" + host + ":" + port + contextPath)
                 .description("Development Server")
         ));
   }
