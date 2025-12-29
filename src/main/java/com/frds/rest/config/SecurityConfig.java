@@ -1,5 +1,6 @@
 package com.frds.rest.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,6 +24,8 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+  @Value("${server.servlet.context-path:/}")
+  private String contextPath;
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
@@ -31,18 +34,18 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> auth
             // ВСЕ ресурсы Swagger UI - публичные
             .requestMatchers(
-                "/swagger-ui/**",
-                "/v3/api-docs/**",
-                "/swagger-ui.html",
-                "/webjars/**",
-                "/swagger-resources/**",
-                "/meta/"
+                contextPath +"swagger-ui/**",
+                contextPath +"v3/api-docs/**",
+                contextPath +"swagger-ui.html",
+                contextPath +"webjars/**",
+                contextPath +"swagger-resources/**",
+                contextPath +"meta/"
             ).permitAll()
 
             // API endpoint'ы требуют авторизации
-            .requestMatchers("/api/**").authenticated()
-            .requestMatchers("/rpc/**").authenticated()
-            .requestMatchers("/meta/**").authenticated()
+            .requestMatchers(contextPath +"api/**").authenticated()
+            .requestMatchers(contextPath +"rpc/**").authenticated()
+            .requestMatchers(contextPath +"meta/**").authenticated()
 
             // Все остальное - публичное или по необходимости
             .anyRequest().permitAll()
@@ -50,9 +53,9 @@ public class SecurityConfig {
         .httpBasic(httpBasic -> httpBasic
             .authenticationEntryPoint((request, response, authException) -> {
               // Кастомный ответ для API endpoint'ов
-              if (request.getRequestURI().startsWith("/api/") ||
-                  request.getRequestURI().startsWith("/rpc/") ||
-                  request.getRequestURI().startsWith("/meta/")) {
+              if (request.getRequestURI().startsWith(contextPath + "api/") ||
+                  request.getRequestURI().startsWith(contextPath + "rpc/") ||
+                  request.getRequestURI().startsWith(contextPath + "meta/")) {
                 response.setStatus(401);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");

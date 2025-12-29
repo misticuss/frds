@@ -21,27 +21,6 @@ public class ProcedureMetadata {
   private int outputParams;
   private String sourceCode;
   private List<ParameterMetadata> parameters = new ArrayList<>();
-  private String returnType;
-  private boolean isFunction;
-
-  public String getSignature() {
-    StringBuilder signature = new StringBuilder(name);
-    signature.append("(");
-
-    List<String> paramStrings = new ArrayList<>();
-    for (ParameterMetadata param : parameters) {
-      paramStrings.add(param.toString());
-    }
-
-    signature.append(String.join(", ", paramStrings));
-    signature.append(")");
-
-    if (returnType != null && !returnType.isEmpty()) {
-      signature.append(" RETURNS ").append(returnType);
-    }
-
-    return signature.toString();
-  }
 
   public boolean isSelectable() {
     return "SELECTABLE".equals(getType()) && getOutputParams() > 0;
