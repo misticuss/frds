@@ -1,4 +1,4 @@
-package com.frds.rest.model;
+package com.frds.db.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

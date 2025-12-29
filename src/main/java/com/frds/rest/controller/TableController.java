@@ -1,7 +1,6 @@
 package com.frds.rest.controller;
 
-import com.frds.rest.model.ErrorDetails;
-import com.frds.rest.service.TableService;
+import com.frds.db.service.TableService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,8 +13,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 /**
  * @author Anton Zhulin

@@ -1,20 +1,15 @@
-package com.frds.rest.service;
+package com.frds.db.service;
 
 import com.frds.rest.exception.ObjectNotFoundException;
-import com.frds.rest.model.ProcedureMetadata;
-import org.springframework.jdbc.core.CallableStatementCallback;
+import com.frds.db.model.ProcedureMetadata;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Service;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

@@ -1,6 +1,11 @@
-package com.frds.rest.service;
+package com.frds.db.service;
 
-import com.frds.rest.model.*;
+import com.frds.db.model.ColumnMetadata;
+import com.frds.db.model.ForeignKeyMetadata;
+import com.frds.db.model.IndexMetadata;
+import com.frds.db.model.ParameterMetadata;
+import com.frds.db.model.ProcedureMetadata;
+import com.frds.db.model.TableMetadata;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.cache.annotation.Cacheable;

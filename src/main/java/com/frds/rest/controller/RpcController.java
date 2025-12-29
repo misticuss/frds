@@ -1,10 +1,9 @@
 package com.frds.rest.controller;
 
 import com.frds.rest.exception.ObjectNotFoundException;
-import com.frds.rest.model.ProcedureMetadata;
-import com.frds.rest.model.TableMetadata;
-import com.frds.rest.service.MetadataService;
-import com.frds.rest.service.PpcService;
+import com.frds.db.model.ProcedureMetadata;
+import com.frds.db.service.MetadataService;
+import com.frds.db.service.PpcService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

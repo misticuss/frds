@@ -1,4 +1,4 @@
-package com.frds.rest.config;
+package com.frds.db.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

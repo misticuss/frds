@@ -1,8 +1,8 @@
-package com.frds.rest.service;
+package com.frds.db.service;
 
 import com.frds.rest.exception.ObjectNotFoundException;
-import com.frds.rest.model.ColumnMetadata;
-import com.frds.rest.model.TableMetadata;
+import com.frds.db.model.ColumnMetadata;
+import com.frds.db.model.TableMetadata;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;

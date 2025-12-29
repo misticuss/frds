@@ -1,8 +1,8 @@
 package com.frds.rest.controller;
 
 import com.frds.rest.exception.ObjectNotFoundException;
-import com.frds.rest.model.TableMetadata;
-import com.frds.rest.service.MetadataService;
+import com.frds.db.model.TableMetadata;
+import com.frds.db.service.MetadataService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
